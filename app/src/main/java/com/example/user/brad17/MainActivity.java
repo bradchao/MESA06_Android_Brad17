@@ -2,6 +2,7 @@ package com.example.user.brad17;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,5 +23,8 @@ public class MainActivity extends AppCompatActivity {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/map.html");
+    }
+    public void gotoWhere(View v){
+        webView.loadUrl("javascript:goto(60.464118, 22.209453)");
     }
 }
