@@ -2,6 +2,8 @@ package com.example.user.brad17;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,13 +18,14 @@ import android.webkit.WebViewClient;
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private LocationManager lmgr;
+    private MyGPSListener myGPSListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webView = (WebView)findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_COARSE_LOCATION},
                     123);
 
-        }else{
+        } else {
             init();
         }
 
@@ -44,15 +47,42 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
         initWebView();
 
         lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        //lmgr.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,);
+        myGPSListener = new MyGPSListener();
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+        lmgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, myGPSListener);
 
     }
 
+    @Override
+    public void finish() {
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+        lmgr.removeUpdates(myGPSListener);
+        super.finish();
+    }
 
+    private class MyGPSListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location location) {
+
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {}
+
+        @Override
+        public void onProviderEnabled(String s) {}
+
+        @Override
+        public void onProviderDisabled(String s) {}
+    }
 
 
     private void initWebView(){
