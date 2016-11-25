@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private class MyGPSListener implements LocationListener {
         @Override
         public void onLocationChanged(Location location) {
-
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+            webView.loadUrl("javascript:goto(" +lat+", " + lng + ")");
         }
 
         @Override
