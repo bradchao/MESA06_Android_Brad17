@@ -17,6 +17,14 @@ function initMap() {
     center: {lat: -34.397, lng: 150.644},
     zoom: 8
   });
+
+  map.addListener("click", function(event){
+        var clickLatLng = event.latLng;
+        var lat = clickLatLng.lat();
+        var lng = clickLatLng.lng();
+        //alert(lat + " x " + lng);
+  });
+
 }
 
 function goto(newlat, newlng){
