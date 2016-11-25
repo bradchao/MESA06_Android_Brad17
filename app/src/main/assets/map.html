@@ -7,7 +7,7 @@
     </style>
 </head>
 <body>
-<input type="button" onclick="goto(36.043782, 32.721547)" value="Go to ..." />
+<div id='test'></div>
 <div id="map"></div>
 <script type="text/javascript">
 
@@ -23,6 +23,8 @@ function initMap() {
         var lat = clickLatLng.lat();
         var lng = clickLatLng.lng();
         //alert(lat + " x " + lng);
+        document.getElementById('test').innerHTML = lat + " x " + lng;
+        android.getLatLng(lat, lng);
   });
 
 }

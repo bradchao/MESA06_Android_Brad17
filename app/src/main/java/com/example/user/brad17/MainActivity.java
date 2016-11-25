@@ -10,15 +10,21 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private LocationManager lmgr;
     private MyGPSListener myGPSListener;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         webView = (WebView) findViewById(R.id.webview);
+        textView = (TextView)findViewById(R.id.mesg);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -92,7 +99,17 @@ public class MainActivity extends AppCompatActivity {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/map.html");
+        webView.addJavascriptInterface(new MyJS(), "android");
     }
+
+    public class MyJS {
+        @JavascriptInterface
+        public void getLatLng(String lat, String lng){
+            Log.v("brad", lat + ":" + lng);
+            textView.setText(lat + ":" + lng);
+        }
+    }
+
     public void gotoWhere(View v){
         webView.loadUrl("javascript:goto(60.464118, 22.209453)");
     }
